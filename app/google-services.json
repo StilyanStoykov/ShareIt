@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "197223421267",
+    "project_id": "shareit-2a6bc",
+    "storage_bucket": "shareit-2a6bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:197223421267:android:69de3ec4dd550d5d8a3da6",
+        "android_client_info": {
+          "package_name": "com.stilyan.shareit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "197223421267-5ps4d5q0f3dgtb16k09vthv5b11vri5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD03ngBHOail06OUepMARW34aJ41Cthw4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "197223421267-5ps4d5q0f3dgtb16k09vthv5b11vri5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
