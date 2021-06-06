@@ -92,6 +92,7 @@
                     android:textColor="@color/black"
                     android:layout_centerVertical="true"
                     />
+                <!--android:text="username"-->
 
                 <LinearLayout
                     android:id="@+id/followers_following_posts_bio"
@@ -186,6 +187,9 @@
 
                         </LinearLayout>
 
+
+
+
                     </LinearLayout>
 
                     <TextView
@@ -202,6 +206,7 @@
                         android:textColor="@android:color/black" />
 
                 </LinearLayout>
+
 
 
                 <RelativeLayout
@@ -221,6 +226,7 @@
                         android:textStyle="bold"
                         android:textColor="@android:color/black"/>
 
+
                     <Button
                         android:id="@+id/edit_account_settings_btn"
                         android:layout_width="170dp"
@@ -229,22 +235,12 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/custom_button_light_blue"
-                        android:insetLeft="0dp"
-                        android:insetTop="0dp"
-                        android:insetRight="0dp"
-                        android:insetBottom="0dp"
-                        android:padding="0dp"
-                        android:paddingStart="0dp"
-                        android:paddingLeft="0dp"
-                        android:paddingTop="0dp"
-                        android:paddingEnd="0dp"
-                        android:paddingRight="0dp"
                         android:text="Edit Profile"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
-                        app:backgroundTint="#00FFF6"
-                        app:elevation="0dp"
-                        app:iconPadding="0dp" />
+                        app:backgroundTint="#00FFF6" />
+
+
 
                 </RelativeLayout>
 

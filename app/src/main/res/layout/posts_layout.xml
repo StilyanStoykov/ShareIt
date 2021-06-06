@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -67,11 +68,11 @@
                 android:id="@+id/likes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/post_image_like_btn"
-                android:paddingLeft="45dp"
+                android:layout_alignRight="@id/post_image_comment_btn"
+                android:paddingRight="70dp"
                 android:layout_marginTop="10dp"
                 android:textStyle="bold"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:text=""
                 android:textColor="@color/black"
                 />
@@ -89,13 +90,14 @@
                 android:id="@+id/comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/post_image_comment_btn"
-                android:paddingLeft="45dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="40dp"
                 android:layout_marginTop="10dp"
                 android:textStyle="bold"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:text=""
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                />
 
             <TextView
                 android:id="@+id/description"
@@ -117,6 +119,13 @@
             android:textSize="0sp"
             android:textColor="@color/black"
             />
+
+
+
+
+
+
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

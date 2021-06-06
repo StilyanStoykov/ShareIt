@@ -228,7 +228,7 @@ class ProfileFragment : Fragment() {
     private fun myPhotos(){
         val postsRef = FirebaseDatabase.getInstance().reference.child("Posts")
 
-        postsRef.addValueEventListener(object : ValueEventListener {
+        postsRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
                 if(p0.exists()){
                     (postList as ArrayList<Post>).clear()
@@ -301,7 +301,7 @@ class ProfileFragment : Fragment() {
 
     private fun getTotalNumberOfPosts(){
         val postsRef = FirebaseDatabase.getInstance().reference.child("Posts")
-        postsRef.addValueEventListener(object : ValueEventListener {
+        postsRef.addValueEventListener(object : ValueEventListener{
             @SuppressLint("SetTextI18n")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()){

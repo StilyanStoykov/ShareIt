@@ -63,7 +63,7 @@
     <Button
         android:id="@+id/change_image_text_btn"
         android:layout_width="190dp"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:layout_below="@+id/profile_image_view_profile_fragment"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"

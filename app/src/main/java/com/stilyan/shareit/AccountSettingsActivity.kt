@@ -1,15 +1,33 @@
 package com.stilyan.shareit
 
+import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
+import android.widget.Toast
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.StorageTask
+import com.google.firebase.storage.UploadTask
+import com.squareup.picasso.Picasso
+import com.stilyan.shareit.Model.User
+import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_account_settings.*
+import java.io.File
+import java.util.*
+import kotlin.collections.HashMap
 
 class AccountSettingsActivity : AppCompatActivity() {
 
@@ -23,13 +41,16 @@ class AccountSettingsActivity : AppCompatActivity() {
     private var CODE_IMG_GALLERY = 1
     private var SAMPLED_CROPPED_IMG_NAME = "SampleCropImg"
 
-    internal var image_selected_uri: Uri?=null
-    internal var originalImage: Bitmap?=null
-    internal lateinit var finalImage: Bitmap
+    internal var image_selected_uri:Uri?=null
+    internal var originalImage:Bitmap?=null
+    internal lateinit var finalImage:Bitmap
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_settings)
+
 
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
         storageProfilePicRef = FirebaseStorage.getInstance().reference.child("Profile Pictures")
@@ -43,10 +64,165 @@ class AccountSettingsActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+
         close_profile_btn.setOnClickListener {
             val intent = Intent(this@AccountSettingsActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
+        }
+
+
+        change_image_text_btn.setOnClickListener {
+            checker = "clicked"
+
+            CropImage.activity()
+                .setAspectRatio(1, 1)
+                .start(this@AccountSettingsActivity)
+        }
+
+        save_infor_profile_btn.setOnClickListener {
+            if (checker == "clicked")
+            {
+                uploadImageAndUpdateInfo()
+            }
+            else
+            {
+                updateUserInfoOnly()
+            }
+        }
+        userInfo()
+    }
+
+//    private fun startCrop(uri: Uri?) {
+//        var destinationFileName : String=StringBuilder(UUID.randomUUID().toString()).append(".jpg").toString()
+//
+//        var uCrop = UCrop.of(uri!!,Uri.fromFile(File(cacheDir,destinationFileName)))
+//
+//        uCrop.start(this@AccountSettingsActivity)
+//    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE  &&  resultCode == Activity.RESULT_OK  &&  data != null)
+        {
+            val result = CropImage.getActivityResult(data)
+            imageUri = result.uri
+            profile_image_view_profile_fragment.setImageURI(imageUri)
+        }
+    }
+
+    private fun updateUserInfoOnly()
+    {
+        when {
+            TextUtils.isEmpty(full_name_profile_fragment.text.toString()) -> Toast.makeText(this, "Please write full name first.", Toast.LENGTH_LONG).show()
+            TextUtils.isEmpty(username_profile_fragment.text.toString()) -> Toast.makeText(this, "Please write user name first.", Toast.LENGTH_LONG).show()
+            TextUtils.isEmpty(bio_profile_fragment.text.toString()) -> Toast.makeText(this, "Please write your bio first.", Toast.LENGTH_LONG).show()
+            else -> {
+                val usersRef = FirebaseDatabase.getInstance().reference.child("Users")
+
+                val userMap = HashMap<String, Any>()
+                userMap["fullname"] = full_name_profile_fragment.text.toString().toLowerCase()
+                userMap["username"] = username_profile_fragment.text.toString().toLowerCase()
+                userMap["bio"] = bio_profile_fragment.text.toString().toLowerCase()
+
+                usersRef.child(firebaseUser.uid).updateChildren(userMap)
+
+                Toast.makeText(this, "Account Information has been updated successfully.", Toast.LENGTH_LONG).show()
+
+                val intent = Intent(this@AccountSettingsActivity, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
+    }
+
+
+
+    private fun userInfo()
+    {
+        val usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.uid)
+
+        usersRef.addValueEventListener(object : ValueEventListener
+        {
+            override fun onDataChange(p0: DataSnapshot)
+            {
+                if (p0.exists())
+                {
+                    val user = p0.getValue<User>(User::class.java)
+
+                    Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile).into(profile_image_view_profile_fragment)
+                    username_profile_fragment.setText(user!!.getUsername())
+                    full_name_profile_fragment.setText(user!!.getFullname())
+                    bio_profile_fragment.setText(user!!.getBio())
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+        })
+    }
+
+
+    private fun uploadImageAndUpdateInfo()
+    {
+        when
+        {
+            imageUri == null -> Toast.makeText(this, "Please select image first.", Toast.LENGTH_LONG).show()
+            TextUtils.isEmpty(full_name_profile_fragment.text.toString()) -> Toast.makeText(this, "Please write full name first.", Toast.LENGTH_LONG).show()
+            username_profile_fragment.text.toString() == "" -> Toast.makeText(this, "Please write user name first.", Toast.LENGTH_LONG).show()
+            bio_profile_fragment.text.toString() == "" -> Toast.makeText(this, "Please write your bio first.", Toast.LENGTH_LONG).show()
+
+            else -> {
+                val progressDialog = ProgressDialog(this)
+                progressDialog.setTitle("Account Settings")
+                progressDialog.setMessage("Please wait, we are updating your profile...")
+                progressDialog.show()
+
+                val fileRef = storageProfilePicRef!!.child(firebaseUser.uid + ".jpg")
+
+                val uploadTask: StorageTask<*>
+                uploadTask = fileRef.putFile(imageUri!!)
+
+                uploadTask.continueWithTask(Continuation <UploadTask.TaskSnapshot, Task<Uri>>{ task ->
+                    if (!task.isSuccessful)
+                    {
+                        task.exception?.let {
+                            throw it
+                            progressDialog.dismiss()
+                        }
+                    }
+                    return@Continuation fileRef.downloadUrl
+                }).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val downloadUrl = task.result
+                        myUrl = downloadUrl.toString()
+
+                        val ref = FirebaseDatabase.getInstance().reference.child("Users")
+
+                        val userMap = HashMap<String, Any>()
+                        userMap["fullname"] = full_name_profile_fragment.text.toString().toLowerCase(
+                            Locale.ROOT)
+                        userMap["username"] = username_profile_fragment.text.toString().toLowerCase(
+                            Locale.ROOT)
+                        userMap["bio"] = bio_profile_fragment.text.toString().toLowerCase(Locale.ROOT)
+                        userMap["image"] = myUrl
+
+                        ref.child(firebaseUser.uid).updateChildren(userMap)
+
+                        Toast.makeText(this, "Account Information has been updated successfully.", Toast.LENGTH_LONG).show()
+
+                        val intent = Intent(this@AccountSettingsActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                        progressDialog.dismiss()
+                    } else {
+                        progressDialog.dismiss()
+                    }
+                }
+            }
         }
     }
 }
