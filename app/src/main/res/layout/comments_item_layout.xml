@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp"
+    android:theme="@style/Theme.AppCompat.DayNight">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_profile_image_comment"

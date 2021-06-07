@@ -68,7 +68,7 @@ class SignUpActivity : AppCompatActivity() {
 
         val userMap = HashMap<String, Any>()
         userMap["uid"] = currentUserID
-        userMap["username"] = userName.toLowerCase(Locale.ROOT)
+        userMap["username"] = userName.lowercase(Locale.ROOT)
         userMap["fullname"] = fullName
         userMap["email"] = email
         userMap["bio"] = "Hello, I'm using ShareIt!"

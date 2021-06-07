@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
-    android:layout_marginTop="10dp">
+    android:layout_marginTop="10dp"
+    android:theme="@style/Theme.AppCompat.DayNight">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/notification_profile_image"
@@ -26,14 +27,12 @@
             android:id="@+id/username_notification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textColor="@color/black"/>
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/comment_notification"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"/>
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

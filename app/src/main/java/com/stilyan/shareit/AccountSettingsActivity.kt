@@ -5,10 +5,10 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -25,7 +25,6 @@ import com.squareup.picasso.Picasso
 import com.stilyan.shareit.Model.User
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_account_settings.*
-import java.io.File
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -37,13 +36,6 @@ class AccountSettingsActivity : AppCompatActivity() {
     //declaration for cropping image
     private var imageUri: Uri? = null
     private var storageProfilePicRef: StorageReference? = null
-    //private var ImageView img
-    private var CODE_IMG_GALLERY = 1
-    private var SAMPLED_CROPPED_IMG_NAME = "SampleCropImg"
-
-    internal var image_selected_uri:Uri?=null
-    internal var originalImage:Bitmap?=null
-    internal lateinit var finalImage:Bitmap
 
 
     override fun onCreate(savedInstanceState: Bundle?)
@@ -94,13 +86,6 @@ class AccountSettingsActivity : AppCompatActivity() {
         userInfo()
     }
 
-//    private fun startCrop(uri: Uri?) {
-//        var destinationFileName : String=StringBuilder(UUID.randomUUID().toString()).append(".jpg").toString()
-//
-//        var uCrop = UCrop.of(uri!!,Uri.fromFile(File(cacheDir,destinationFileName)))
-//
-//        uCrop.start(this@AccountSettingsActivity)
-//    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
         super.onActivityResult(requestCode, resultCode, data)
@@ -123,9 +108,9 @@ class AccountSettingsActivity : AppCompatActivity() {
                 val usersRef = FirebaseDatabase.getInstance().reference.child("Users")
 
                 val userMap = HashMap<String, Any>()
-                userMap["fullname"] = full_name_profile_fragment.text.toString().toLowerCase()
-                userMap["username"] = username_profile_fragment.text.toString().toLowerCase()
-                userMap["bio"] = bio_profile_fragment.text.toString().toLowerCase()
+                userMap["fullname"] = full_name_profile_fragment.text.toString()
+                userMap["username"] = username_profile_fragment.text.toString().lowercase()
+                userMap["bio"] = bio_profile_fragment.text.toString()
 
                 usersRef.child(firebaseUser.uid).updateChildren(userMap)
 
@@ -142,7 +127,7 @@ class AccountSettingsActivity : AppCompatActivity() {
 
     private fun userInfo()
     {
-        val usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.uid)
+        val usersRef = FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser.uid)
 
         usersRef.addValueEventListener(object : ValueEventListener
         {
@@ -203,11 +188,9 @@ class AccountSettingsActivity : AppCompatActivity() {
                         val ref = FirebaseDatabase.getInstance().reference.child("Users")
 
                         val userMap = HashMap<String, Any>()
-                        userMap["fullname"] = full_name_profile_fragment.text.toString().toLowerCase(
-                            Locale.ROOT)
-                        userMap["username"] = username_profile_fragment.text.toString().toLowerCase(
-                            Locale.ROOT)
-                        userMap["bio"] = bio_profile_fragment.text.toString().toLowerCase(Locale.ROOT)
+                        userMap["fullname"] = full_name_profile_fragment.text.toString()//.toLowerCase(Locale.ROOT)
+                        userMap["username"] = username_profile_fragment.text.toString().toLowerCase(Locale.ROOT)
+                        userMap["bio"] = bio_profile_fragment.text.toString()//.toLowerCase(Locale.ROOT)
                         userMap["image"] = myUrl
 
                         ref.child(firebaseUser.uid).updateChildren(userMap)

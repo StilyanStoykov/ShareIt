@@ -263,7 +263,7 @@ class ProfileFragment : Fragment() {
 
                     Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile).into(view?.profile_image_profile_frag)
                     view?.profile_fragment_username?.text = user!!.getUsername()
-                    view?.full_name_profile_frag?.text = user!!.getFullname()
+                    view?.profile_fragment_fullname?.text = user!!.getFullname()
                     view?.bio_profile_frag?.text = user!!.getBio()
                 }
             }

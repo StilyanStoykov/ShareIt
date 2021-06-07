@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat.DayNight">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:theme="@style/Theme.AppCompat.DayNight">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_profile_image_search"
@@ -22,7 +25,6 @@
             android:layout_height="wrap_content"
             android:text="Username"
             android:textSize="14dp"
-            android:textColor="@color/black"
             android:layout_marginTop="30dp"
             android:layout_toRightOf="@id/user_profile_image_search"/>
 
@@ -33,7 +35,6 @@
             android:text="Full Name"
             android:textStyle="bold"
             android:textSize="14dp"
-            android:textColor="@color/black"
             android:layout_marginTop="2dp"
             android:layout_below="@id/user_name_search"
             android:layout_toRightOf="@id/user_profile_image_search"/>
@@ -45,6 +46,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="35dp"
             android:background="@drawable/custom_button_light_blue"
+            style="@style/TextAppearance.AppCompat.Widget.Button"
             android:backgroundTint="#00FFF6"
             android:padding="0dp"
             android:paddingStart="0dp"
@@ -55,7 +57,7 @@
             android:paddingBottom="0dp"
             android:text="Follow"
             android:textAllCaps="false"
-            android:textColor="@color/white" />
+            tools:targetApi="lollipop" />
 
 
     </RelativeLayout>

@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.NotificationsFragment">
+    tools:context=".Fragments.NotificationsFragment"
+    android:theme="@style/Theme.AppCompat.DayNight">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout_notifications"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/notifications_toolbar"
@@ -18,8 +18,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="4dp"
             android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:background="@android:color/white">
+            android:layout_marginRight="6dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -31,7 +30,6 @@
                     android:textSize="18sp"
                     android:maxLines="1"
                     android:textStyle="bold"
-                    android:textColor="@android:color/black"
                     android:layout_centerVertical="true"/>
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
@@ -42,7 +40,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
-        android:background="@color/white"
         android:layout_below="@id/app_bar_layout_notifications">
     </androidx.recyclerview.widget.RecyclerView>
 
